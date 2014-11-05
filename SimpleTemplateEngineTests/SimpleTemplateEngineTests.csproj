@@ -59,6 +59,10 @@
       <Name>SimpleTemplateEngine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="TemplateExamples\alert.html" />
+    <Content Include="TemplateExamples\reverse-alert.html" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

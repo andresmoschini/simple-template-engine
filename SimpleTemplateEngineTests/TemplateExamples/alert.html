@@ -1,0 +1,450 @@
+﻿<html lang="en">
+<head>
+    <title>Copsync Email</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <!--{{ MODEL
+        emailTitle : string
+        testMode : boolean
+        alertDay : string
+        agencyName : string
+        orgLocation : string
+        orgAddress : string
+        userName : string
+        userFullname : string
+        orgLatitude : string
+        orgLongitude : string
+        appVersion : string
+        alertText : string
+        ipAddress : string
+        macAddress : string
+        status : boolean
+        statusText : string
+        errorMessage : string
+        success: boolean
+        hasHistoryStatus: boolean
+        hasOfficers : boolean
+        officers : List
+            colorRow : string : "#EBF3FA" (pair) / "#FFFFFF" (odd)
+            actorName : string
+            agencyName : string
+            actorDistance : string
+            colorOnline : string : #CAF0CC (Green, Connected) / #F9C7CE (Red, Offline)
+            alertSent : string : YES/NO
+        hasDispatchers : boolean
+        dispatchers : List
+            colorRow : string : "#EBF3FA" (pair) / "#FFFFFF" (odd)
+            actorName : string
+            agencyName : string
+            colorOnline : string : #CAF0CC (Green, Connected) / #F9C7CE (Red, Offline)
+            alertSent : string : YES/NO
+        hasRecipients : boolean
+        recipients : List
+            colorRow : string : "#EBF3FA" (pair) / "#FFFFFF" (odd)
+            actorName : string
+            currentLocation: string
+            alertSent: string : YES/NO
+        hasBusRecipients : boolean
+        busRecipients : List
+            colorRow : string : "#EBF3FA" (pair) / "#FFFFFF" (odd)
+            agencyName : string
+            actorName : string
+            encryption : string
+            hashing : string
+    }}-->
+</head>
+<body style="margin: 0; padding: 0;">
+    <style type="text/css">
+        /* Force Outlook to provide a "view in browser" message */
+        #outlook a {
+            padding: 0;
+        }
+        /* Force Hotmail to display emails at full width */
+        .ReadMsgBody {
+            width: 100%;
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+            /* Force Hotmail to display normal line spacing */
+            .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {
+                line-height: 100%;
+            }
+        /* Prevent WebKit and Windows mobile changing default text sizes */
+        body, table, td, a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        /* Remove spacing between tables in Outlook 2007 and up */
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        /* Allow smoother rendering of resized image in Internet Explorer */
+        img {
+            -ms-interpolation-mode: bicubic;
+        }
+        /* RESET STYLES */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+        img {
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            display: block;
+        }
+
+        table {
+            border-collapse: collapse !important;
+        }
+        /* iOS BLUE LINKS */
+        .appleBody a {
+            color: #68440a;
+            text-decoration: none;
+        }
+
+        .appleFooter a {
+            color: #999999;
+            text-decoration: none;
+        }
+    </style>
+    <table cellpadding="0" cellspacing="0" border="0" width="900" align="center">
+        <tr>
+            <td align="left" valign="top" style="line-height: 0px; padding-top: 30px; padding-bottom: 25px;"><img src="https://dataonixnonprod.blob.core.windows.net/images/v2/logoCOPsync911.png" style="display: block;" border="0" /></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" style="padding-top: 25px; border-top: 1px solid #E0E0E0"><span style="color: #444444; padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 30px;">{{= emailTitle }}</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" height="20"></td>
+        </tr>
+        <!--{{ IF #testMode testMode }}-->
+        <tr>
+            <td align="center" width="100%" valign="middle" bgcolor="#EEB700" height="36"><span style="font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; font-size: 14px; font-weight: bold;">THIS IS A TEST -- THIS IS NOT A LIVE ALERT</span></td>
+        </tr>
+        <!--{{ ENDIF #testMode }}-->
+        <tr>
+            <td style="padding-top: 30px; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;" align="left" valign="top"><span style="color: #666666; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 16px; line-height: 17px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">ALERT DETAILS</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" style="padding-top: 15px;">
+                <table cellpadding="0" cellspacing="0" width="900" align="center">
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Alert Date</span></td>
+                        <td width="300" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Organization</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= alertDay }}</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= agencyName }}</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Organization Location</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Organization Location Address</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= orgLocation }}</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= orgAddress }}</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">User Name</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">User Full Name</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= userName }}</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= userFullname }}</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Organization Location Latitude</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Organization Location Longitude</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= orgLatitude }}</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= orgLongitude }}</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Application Version</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" colspan="2"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= appVersion }}</span>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Alert Text</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" colspan="2"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= alertText }}</span>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Request IP Address</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Request MAC Address</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= ipAddress }}</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= macAddress }}</span></td>
+                    </tr>
+                    <!--{{ IF #success success }}-->
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" colspan="2"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Status</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" colspan="2">
+                            <span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= status }}</span>
+                        </td>
+                    </tr>
+                    <!--{{ ENDIF #success }}-->
+                    <!--{{ IFNOT #not_success success }}-->
+                    <tr>
+                        <td align="left" valign="top" height="25" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Status</span></td>
+                        <td align="left" valign="top"><span style="padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; color: #858585; font-size: 12px;">Error Message</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" height="5" colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td width="380" align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= statusText }}</span>
+                        <td align="left" valign="top"><span style="padding: 0; font-weight: bold; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; color: #78ACD8; font-size: 14px;">{{= errorMessage }}</span>
+                    </tr>
+                    <!--{{ ENDIFNOT #not_success }}-->
+                </table>
+            </td>
+        </tr>
+    <!--{{ IF #hasHistoryStatus hasHistoryStatus }}-->
+        <tr>
+            <td style="padding-top: 40px; border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;" align="left" valign="top"><span style="color: #666666; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 16px; line-height: 17px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">OFFICERS THAT RECEIVED THIS ALERT IN COPSYNC 2.0</span></td>
+        </tr>
+        <!--{{ IFNOT #not_hasOfficers hasOfficers }}-->
+        <tr>
+            <td align="left" valign="top" height="10"></td>
+        </tr>
+        <tr>
+            <td align="center" width="100%" valign="middle" bgcolor="#EBF3FA" height="50"><span style="font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 12px">No Officers were associated with this alert.</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" height="30"></td>
+        </tr>
+        <!--{{ ENDIFNOT #not_hasOfficers }}-->
+        <!--{{ IF #hasOfficers hasOfficers }}-->
+        <tr>
+            <td align="left" valign="top" style="padding-bottom: 30px;">
+                <table cellpadding="0" cellspacing="0" width="900" align="center">
+                    <tr>
+                        <td align="left" valign="top" height="10" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" colspan="2" style="padding-left: 10px;  background-color:#D0D7DF; border-right: 1px solid #FFFFFF;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold;">COPsync Alert</span></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Name</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Agency Name</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Distance (miles)</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Enabled</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Online</span></td>
+                    </tr>
+                    <!--{{ EACH #officers officers }}-->
+                    <tr>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= actorName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= agencyName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= actorDistance }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">YES</span></td>
+                        <td height="25" bgcolor="{{= colorOnline }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= alertSent }}</span></td>
+                    </tr>
+                    <!--{{ ENDEACH #officers }}-->
+                </table>
+            </td>
+        </tr>
+        <!--{{ ENDIF #hasOfficers }}-->
+        <tr>
+            <td style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;" align="left" valign="top"><span style="color: #666666; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 16px; line-height: 17px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">DISPATCHERS THAT RECEIVED THIS ALERT IN COPSYNC 2.0</span></td>
+        </tr>
+        <!--{{ IFNOT #not_hasDispatchers hasDispatchers }}-->
+        <tr>
+            <td align="left" valign="top" height="10"></td>
+        </tr>
+        <tr>
+            <td align="center" width="100%" valign="middle" bgcolor="#EBF3FA" height="50"><span style="font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 12px">No Dispatchers were associated with this alert.</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" height="30"></td>
+        </tr>
+        <!--{{ ENDIFNOT #not_hasDispatchers }}-->
+        <!--{{ IF #hasDispatchers hasDispatchers }}-->
+        <tr>
+            <td align="left" valign="top" style="padding-bottom: 30px;">
+                <table cellpadding="0" cellspacing="0" width="900" align="center">
+                    <tr>
+                        <td align="left" valign="top" height="10" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" colspan="2" style="padding-left: 10px;  background-color:#D0D7DF; border-right: 1px solid #FFFFFF;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold;">COPsync Alert</span></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Name</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Agency Name</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Enabled</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Online</span></td>
+                    </tr>
+                    <!--{{ EACH #dispatchers dispatchers }}-->
+                    <tr>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= actorName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= agencyName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">YES</span></td>
+                        <td height="25" bgcolor="{{= colorOnline }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= alertSent }}</span></td>
+                    </tr>
+                    <!--{{ ENDEACH #dispatchers }}-->
+                </table>
+            </td>
+        </tr>
+        <!--{{ ENDIF #hasDispatchers }}-->
+        <tr>
+            <td style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;" align="left" valign="top"><span style="color: #666666; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 16px; line-height: 17px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">DEVICES THAT RECEIVED THIS ALERT IN COPSYNC911</span></td>
+        </tr>
+        <!--{{ IFNOT #not_hasRecipients hasRecipients }}-->
+        <tr>
+            <td align="left" valign="top" height="10"></td>
+        </tr>
+        <tr>
+            <td align="center" width="100%" valign="middle" bgcolor="#EBF3FA" height="50"><span style="font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 12px">No Recipients were associated with this alert.</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" height="30"></td>
+        </tr>
+        <!--{{ ENDIFNOT #not_hasRecipients }}-->
+        <!--{{ IF #hasRecipients hasRecipients }}-->
+        <tr>
+            <td align="left" valign="top" style="padding-bottom: 30px;">
+                <table cellpadding="0" cellspacing="0" width="900" align="center">
+                    <tr>
+                        <td align="left" valign="top" height="10" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" style="padding-left: 10px;" align="left" valign="top"></td>
+                        <td height="25" colspan="2" style="padding-left: 10px;  background-color:#D0D7DF;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; font-weight: bold;">COPsync Alert</span></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Name</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Current Location</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Enabled</span></td>
+                        <td height="25" style="border-top: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Online</span></td>
+                    </tr>
+                    <!--{{ EACH #recipients recipients }}-->
+                    <tr>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;"><a href="@(link)">{{= actorName }}</a></span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= currentLocation }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">YES</span></td>
+                        <td height="25" bgcolor="{{= colorOnline }}" style="border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= alertSent }}</span></td>
+                    </tr>
+                    <!--{{ ENDEACH #recipients }}-->
+                </table>
+            </td>
+        </tr>
+        <!--{{ ENDIF #hasRecipients }}-->
+        <tr>
+            <td style="border-bottom: 1px solid #CCCCCC; padding-bottom: 10px;" align="left" valign="top"><span style="color: #666666; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 16px; line-height: 17px; padding: 0px; margin-bottom: 0px; margin-top: 0px;">ORGANIZATIONS THAT RECEIVED THIS ALERT VIA QUEUE MESSAGES</span></td>
+        </tr>
+        <!--{{ IFNOT #not_hasBusRecipients hasBusRecipients }}-->
+        <tr>
+            <td align="left" valign="top" height="10"></td>
+        </tr>
+        <tr>
+            <td align="center" width="100%" valign="middle" bgcolor="#EBF3FA" height="50"><span style="font-family: Arial, Helvetica, sans-serif; color: #000000; font-size: 12px">No Service Bus recipients were associated with this alert.</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" height="30"></td>
+        </tr>
+        <!--{{ ENDIFNOT #not_hasBusRecipients }}-->
+        <!--{{ IF #hasBusRecipients hasBusRecipients }}-->
+        <tr>
+            <td align="left" valign="top" style="padding-bottom: 30px;">
+                <table cellpadding="0" cellspacing="0" width="900" align="center">
+                    <tr>
+                        <td align="left" valign="top" height="10" colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Organization</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Queue</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Encryption Algorithm</span></td>
+                        <td height="25" style="border: 1px solid #CCCCCC; border-left: none;" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #3D3E3F; font-weight: bold;">Hashing Function</span></td>
+                    </tr>
+                    <!--{{ EACH #busRecipients busRecipients }}-->
+                    <tr>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= agencyName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= actorName }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= encryption }}</span></td>
+                        <td height="25" bgcolor="{{= colorRow }}" style="border-right: 1px solid #CCCCCC; border-bottom: 1px solid #CCCCCC" align="center" valign="middle"><span style="margin-right: 5px; padding: 0px; margin-bottom: 5px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #333333;">{{= hashing }}</span></td>
+                    </tr>
+                    <!--{{ ENDEACH #busRecipients }}-->
+                </table>
+            </td>
+        </tr>
+        <!--{{ ENDIF #hasBusRecipients }}-->
+    <!--{{ ENDIF #hasHistoryStatus }}-->
+        <tr>
+            <td align="left" valign="top" style="padding-top: 15px; border-bottom: 1px solid #E0E0E0; padding-bottom: 15px;"><span style="color: #666666; font-size: 12px; padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif">The Dataonix Team</span></td>
+        </tr>
+        <tr>
+            <td align="left" valign="top" style="padding-top: 20px; padding-bottom: 20px;"><span style="color: #444444; font-size: 12px; padding: 0px; margin-bottom: 0px; margin-top: 0px; font-family: Arial, Helvetica, sans-serif">Copyright © @DateTime.Now.Year COPsync, Inc., a Dataonix company. All rights reserved.</span></td>
+        </tr>
+    </table>
+</body>
+</html>
