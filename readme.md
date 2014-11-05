@@ -5,7 +5,7 @@
 ### Model specification
 
 ```
-    \<!--{{ MODEL
+    <!--{{ MODEL
     <propertyName> : <propertyType (boolean, string, list)>
     }}-->
 ```
