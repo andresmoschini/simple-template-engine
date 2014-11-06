@@ -8,37 +8,28 @@ namespace SimpleTemplateEngine.Parser
 {
     public interface IRuleset
     {
-        string ModelSpecificationPattern { get; }
-        string PrintPattern { get; }
-        string PositiveConditionPattern { get; }
-        string NegativeConditionPattern { get; }
-        string RepeatingPattern { get; }
+        IReadOnlyCollection<Rule> Rules { get; }
+        IReadOnlyCollection<String> StartTokens { get; }
+        Rule GetRuleByStartToken(string startToken);
     }
     public class Ruleset : IRuleset
     {
-        public string ModelSpecificationPattern
+        private readonly Dictionary<string, Rule> indexedRulesByStartToken = null;
+        public IReadOnlyCollection<Rule> Rules { get; private set; }
+        public IReadOnlyCollection<String> StartTokens
         {
-            get { return "<!--{{ MODEL{content}}}-->"; }
+            get { return indexedRulesByStartToken.Keys.ToArray(); }
         }
 
-        public string PrintPattern
+        public Rule GetRuleByStartToken(string startToken)
         {
-            get { return "{{= {propertyName} }}"; }
+            return indexedRulesByStartToken[startToken];
         }
 
-        public string PositiveConditionPattern
+        public Ruleset(IEnumerable<Rule> rules)
         {
-            get { return "<!--{{ IF #{id} {propertyName} }}{content}<!--{{ ENDIF #{id} }}-->"; }
-        }
-
-        public string NegativeConditionPattern
-        {
-            get { return "<!--{{ IFNOT #{id} {propertyName} }}{content}<!--{{ ENDIFNOT #{id} }}-->"; }
-        }
-
-        public string RepeatingPattern
-        {
-            get { return "<!--{{ EACH #{id} {propertyName} }}{content}<!--{{ ENDEACH #{id} }}-->"; }
+            Rules = rules.ToArray();
+            indexedRulesByStartToken = Rules.ToDictionary(x => x.StartToken);
         }
     }
 }

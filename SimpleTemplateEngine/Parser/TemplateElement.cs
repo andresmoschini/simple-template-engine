@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace SimpleTemplateEngine.Parser
 {
-    public enum TemplateElement
+    public class TemplateElement
     {
-        ModelSpecification,
-        Print,
-        PositiveCondition,
-        NegativeCondition,
-        Repeating,
-        End
+        public string Id { get; set; }
+        public string PropertyName { get; set; }
+        public Cursor ContentCursor { get; set; }
     }
 }

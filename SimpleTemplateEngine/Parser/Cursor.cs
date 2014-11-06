@@ -10,29 +10,41 @@ namespace SimpleTemplateEngine.Parser
     {
         public readonly string Text;
         public readonly int CurrentPos;
-        public int Lenght { get { return Text.Length; } }
-        public bool AtEnd { get { return CurrentPos == Lenght; } }
+        public readonly int Length;
+        public bool AtEnd { get { return CurrentPos >= Length; } }
         
         public Cursor(string text)
         {
             Text = text;
             CurrentPos = 0;
+            Length = text.Length;
         }
 
-        private Cursor(string text, int currentPos)
+        private Cursor(string text, int currentPos, int lenght)
         {
             Text = text;
             CurrentPos = currentPos > text.Length ? text.Length : currentPos;
+            Length = lenght;
+        }
+
+        public Cursor Truncate()
+        {
+            return new Cursor(Text, CurrentPos, CurrentPos);
         }
 
         public Cursor Advance(int value = 1)
         {
-            return new Cursor(Text, CurrentPos + value);
+            return new Cursor(Text, CurrentPos + value, Length);
+        }
+
+        public Cursor AdvanceTo(int value)
+        {
+            return new Cursor(Text, value < Length ? value : Length, Length);
         }
 
         public Cursor AdvanceToEnd()
         {
-            return new Cursor(Text, Lenght);
+            return new Cursor(Text, Length, Length);
         }
 
         public string GetDifference(Cursor other)
@@ -49,12 +61,20 @@ namespace SimpleTemplateEngine.Parser
         public Cursor Seek(string text)
         {
             var pos = Text.IndexOf(text, CurrentPos);
-            return new Cursor(Text, pos);
+            if (pos < 0)
+            {
+                //TODO: take it into account what happen when text is not present
+                return AdvanceToEnd();
+            }
+            else
+            {
+                return new Cursor(Text, pos, Length);
+            }
         }
 
         public bool Match(string text)
         {
-            if (text.Length + CurrentPos > Text.Length)
+            if (text.Length + CurrentPos > Length)
             {
                 return false;
             }
@@ -71,13 +91,13 @@ namespace SimpleTemplateEngine.Parser
         public Cursor SeekAny(char[] anyOf)
         {
             var pos = Text.IndexOfAny(anyOf, CurrentPos);
-            if (pos == Lenght || pos < 0)
+            if (pos >= Length || pos < 0)
             {
                 return AdvanceToEnd();
             }
             else
             {
-                return new Cursor(Text, pos);
+                return new Cursor(Text, pos, Length);
             }
         }
 
@@ -103,12 +123,13 @@ namespace SimpleTemplateEngine.Parser
         {
             const int sampleLenght = 30;
             
-            var sampleFinish = Math.Min(Lenght, CurrentPos + sampleLenght);
+            var sampleFinish = Math.Min(Length, CurrentPos + sampleLenght);
 
             return string.Format("{0}{1}{2}",
                 CurrentPos > 0 ? "..." : string.Empty,
                 Text.Substring(CurrentPos, sampleFinish - CurrentPos),
-                sampleFinish < Lenght ? "..." : string.Empty);
+                sampleFinish < Length ? "..." : string.Empty);
         }
+
     }
 }
