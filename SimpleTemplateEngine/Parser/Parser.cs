@@ -48,7 +48,8 @@ namespace SimpleTemplateEngine.Parser
             {
                 var previousPos = currentPos;
                 var templateElement = GetNextTemplateElement();
-                sb.Append(template.Substring(previousPos, currentPos - previousPos));
+                var substr = template.Substring(previousPos, currentPos - previousPos);
+                sb.Append(substr);
 
                 string endToken;
                 switch (templateElement)
@@ -123,7 +124,7 @@ namespace SimpleTemplateEngine.Parser
                     }
                 }
 
-                currentPos++;
+                currentPos = tentativePos + 1;
             }
         }
 
