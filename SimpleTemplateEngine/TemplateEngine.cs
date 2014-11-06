@@ -24,8 +24,8 @@ namespace SimpleTemplateEngine
         {
             //TODO: improve it reading the file in place of use a string in memory
             var template = FileReader.Read(path);
-            var parser = ParserFactory.CreateParser(template);
-            return parser.Process(model);
+            var parser = ParserFactory.CreateParser();
+            return parser.Process(template, model);
         }
     }
 }

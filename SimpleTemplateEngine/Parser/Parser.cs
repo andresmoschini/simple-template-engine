@@ -8,21 +8,19 @@ namespace SimpleTemplateEngine.Parser
 {
     public interface IParser
     {
-        string Process(object model);
+        string Process(string template, object model);
     }
 
     public class Parser : IParser
     {
         private readonly IRuleset ruleset;
-        private readonly string template;
 
-        public Parser(IRuleset ruleset, string template)
+        public Parser(IRuleset ruleset)
         {
-            this.template = template;
             this.ruleset = ruleset;
         }
 
-        public string Process(object model)
+        public string Process(string template, object model)
         {
             var cursor = new Cursor(template);
             var sb = new StringBuilder();

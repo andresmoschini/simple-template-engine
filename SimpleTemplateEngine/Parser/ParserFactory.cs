@@ -9,14 +9,14 @@ namespace SimpleTemplateEngine.Parser
 {
     public interface IParserFactory
     {
-        IParser CreateParser(string template);
+        IParser CreateParser();
     }
 
     public class ParserFactory : IParserFactory
     {
         private readonly IRuleset ruleset;
         
-        public IParser CreateParser(string template)
+        public IParser CreateParser()
         {
             var ruleset = new Ruleset(new Rule[] {
                 new ModelSpecificationRule("<!--{{ MODEL{content}}}-->"),
@@ -25,7 +25,7 @@ namespace SimpleTemplateEngine.Parser
                 new NegativeConditionRule("<!--{{ IFNOT #{id} {propertyName} }}{content}<!--{{ ENDIFNOT #{id} }}-->"),
                 new RepeatingRule("<!--{{ EACH #{id} {propertyName} }}{content}<!--{{ ENDEACH #{id} }}-->")
             });
-            return new Parser(ruleset, template);
+            return new Parser(ruleset);
         }
 
     }
