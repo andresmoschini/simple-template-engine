@@ -121,14 +121,17 @@ namespace SimpleTemplateEngine.Parser
 
         public override string ToString()
         {
-            const int sampleLenght = 30;
-            
-            var sampleFinish = Math.Min(Length, CurrentPos + sampleLenght);
+            var length = Length - CurrentPos;
+            const int sampleLenght = 40;
 
-            return string.Format("{0}{1}{2}",
-                CurrentPos > 0 ? "..." : string.Empty,
-                Text.Substring(CurrentPos, sampleFinish - CurrentPos),
-                sampleFinish < Length ? "..." : string.Empty);
+            if (length < (sampleLenght + 3))
+            {
+                return Text.Substring(CurrentPos, length);
+            }
+            else
+            {
+                return Text.Substring(CurrentPos, sampleLenght) + "..." + Text.Substring(Length - sampleLenght, sampleLenght);
+            }
         }
 
     }
