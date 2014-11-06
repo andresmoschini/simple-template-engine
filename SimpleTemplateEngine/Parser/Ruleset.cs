@@ -18,7 +18,7 @@ namespace SimpleTemplateEngine.Parser
     {
         public string ModelSpecificationPattern
         {
-            get { return "<!--{{ MODEL {content}}}-->"; }
+            get { return "<!--{{ MODEL{content}}}-->"; }
         }
 
         public string PrintPattern
