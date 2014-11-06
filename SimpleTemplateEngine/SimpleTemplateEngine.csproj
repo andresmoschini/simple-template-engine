@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parser\Cursor.cs" />
+    <Compile Include="Parser\ModelProperty.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\Rules\IdentifiedTemplateRule.cs" />
     <Compile Include="Parser\TemplateElement.cs" />
