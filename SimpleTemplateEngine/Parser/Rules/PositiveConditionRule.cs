@@ -43,6 +43,7 @@ namespace SimpleTemplateEngine.Parser.Rules
             pending = GetTextAfter(pending, "{content}");
             var endToken = pending.Replace("{id}", id);
             var contentEndCursor = contentStartCursor.MoveBefore(endToken);
+            var templateElementEndCursor = contentEndCursor.MoveAfter(endToken);
 
             templateElement = new TemplateElement()
             {
@@ -52,7 +53,7 @@ namespace SimpleTemplateEngine.Parser.Rules
             };
 
             //TODO move to after endToken
-            return contentEndCursor;
+            return templateElementEndCursor;
         }
     }
 }

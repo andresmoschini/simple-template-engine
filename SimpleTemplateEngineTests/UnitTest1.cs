@@ -44,7 +44,7 @@ namespace SimpleTemplateEngineTests
             var engine = new TemplateEngine();
             var result = engine.Process("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ ENDIF "));
-            Assert.IsFalse(result.Contains("{ ENDIF"));
+            Assert.IsFalse(result.Contains("{ ENDIF "));
         }
     }
 }
