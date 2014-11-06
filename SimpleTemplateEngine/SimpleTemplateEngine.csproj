@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\Cursor.cs" />
     <Compile Include="Parser\Parser.cs" />
     <Compile Include="Parser\TemplateElement.cs" />
     <Compile Include="TemplateEngine.cs" />
