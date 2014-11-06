@@ -9,10 +9,12 @@ namespace SimpleTemplateEngineTests
     {
         [TestMethod]
         [DeploymentItem(@"TemplateExamples\alert.html")]
-        public void TestMethod1()
+        public void ResultTextShouldContainsTheLastCharacters()
         {
             var engine = new TemplateEngine();
             var result = engine.Process("alert.html", null);
+            var endCharacters = result.Substring(result.Length - 18, 18);
+            Assert.AreEqual("\r\n</body>\r\n</html>", endCharacters);
         }
 
         [TestMethod]

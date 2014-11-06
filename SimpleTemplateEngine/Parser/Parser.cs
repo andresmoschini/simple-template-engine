@@ -107,6 +107,7 @@ namespace SimpleTemplateEngine.Parser
                 var tentativePos = template.IndexOfAny(startChars, currentPos);
                 if (tentativePos < 0 || tentativePos == templateLenght)
                 {
+                    currentPos = templateLenght;
                     return TemplateElement.End;
                 }
 
