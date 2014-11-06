@@ -16,5 +16,17 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
         }
+
+        public override IEnumerable<Tuple<Cursor, object>> Process(TemplateElement templateElement, ModelProperty modelProperty, object parentModel)
+        {
+            if (!modelProperty.BooleanValue)
+            {
+                return Enumerable.Empty<Tuple<Cursor, object>>();
+            }
+            else
+            {
+                return new[] { new Tuple<Cursor, object>(templateElement.ContentCursor, parentModel) };
+            }
+        }
     }
 }

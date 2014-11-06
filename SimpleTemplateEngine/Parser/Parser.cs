@@ -43,11 +43,14 @@ namespace SimpleTemplateEngine.Parser
                 }
                 else
                 {
+                    //TODO: find a more elegant way to do it
                     TemplateElement templateElement;
                     cursor = rule.Preprocess(newCursor, out templateElement);
-                    if (!templateElement.ContentCursor.AtEnd)
+                    var propertyValue = templateElement.PropertyName == null ? ModelProperty.Empty : ModelProperty.FromObject(model, templateElement.PropertyName);
+                    var list = rule.Process(templateElement, propertyValue, model);
+                    foreach (var tuple in list)
                     {
-                        Process(stringBuilder, templateElement.ContentCursor, model);
+                        Process(stringBuilder, tuple.Item1, tuple.Item2);
                     }
                 }
             }

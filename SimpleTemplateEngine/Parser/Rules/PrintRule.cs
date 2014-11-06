@@ -9,7 +9,7 @@ namespace SimpleTemplateEngine.Parser.Rules
     public class PrintRule : Rule
     {
         private string startToken;
-        private string endTokenBase;
+        private string endToken;
         public override string StartToken { get { return startToken; } }
 
         /// <summary>
@@ -20,22 +20,30 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{propertyName}");
-            endTokenBase = GetTextAfter(template, "{propertyName}");
+            endToken = GetTextAfter(template, "{propertyName}");
         }
 
         public override Cursor Preprocess(Cursor cursor, out TemplateElement templateElement)
         {
-            var newCursor = cursor.MoveBefore(endTokenBase);
-            newCursor = newCursor.Advance(endTokenBase.Length);
+            var propertyNameStartCursor = cursor.MoveAfter(startToken);
+            var propertyNameEndCursor = cursor.MoveBefore(endToken);
+            var newCursor = propertyNameEndCursor.MoveAfter(endToken);
+
+            var propertyName = propertyNameStartCursor.GetDifference(propertyNameEndCursor);
 
             templateElement = new TemplateElement()
             {
                 Id = null,
-                PropertyName = null,
+                PropertyName = propertyName,
                 ContentCursor = newCursor.Truncate()
             };
 
             return newCursor;
+        }
+
+        public override IEnumerable<Tuple<Cursor, object>> Process(TemplateElement templateElement, ModelProperty modelProperty, object parentModel)
+        {
+            return new[] { new Tuple<Cursor, object>(new Cursor(modelProperty.StringValue), null) };
         }
     }
 }

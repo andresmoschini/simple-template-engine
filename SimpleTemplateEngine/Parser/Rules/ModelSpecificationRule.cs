@@ -37,5 +37,10 @@ namespace SimpleTemplateEngine.Parser.Rules
 
             return newCursor;
         }
+
+        public override IEnumerable<Tuple<Cursor, object>> Process(TemplateElement templateElement, ModelProperty modelProperty, object parentModel)
+        {
+            return Enumerable.Empty<Tuple<Cursor, object>>();
+        }
     }
 }
