@@ -5,7 +5,7 @@ using SimpleTemplateEngine;
 namespace SimpleTemplateEngineTests
 {
     [TestClass]
-    public class UnitTest1
+    public class EndToEndTests
     {
         [TestMethod]
         [DeploymentItem(@"TemplateExamples\alert.html")]
@@ -13,7 +13,6 @@ namespace SimpleTemplateEngineTests
         {
             var engine = new TemplateEngine();
             var result = engine.Process("alert.html", null);
-            Console.WriteLine(result);
         }
     }
 }
