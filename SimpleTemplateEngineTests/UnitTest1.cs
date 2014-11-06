@@ -36,5 +36,15 @@ namespace SimpleTemplateEngineTests
             Assert.IsFalse(result.Contains("<!--{{ IF "));
             Assert.IsFalse(result.Contains("{ IF"));
         }
+
+        [TestMethod]
+        [DeploymentItem(@"TemplateExamples\alert.html")]
+        public void ResultTextShouldNotContainsIFClose()
+        {
+            var engine = new TemplateEngine();
+            var result = engine.Process("alert.html", null);
+            Assert.IsFalse(result.Contains("<!--{{ ENDIF "));
+            Assert.IsFalse(result.Contains("{ ENDIF"));
+        }
     }
 }

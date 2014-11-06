@@ -26,7 +26,7 @@ namespace SimpleTemplateEngine.Parser.Rules
             endTokenBase = GetTextAfter(template, "{content}");
         }
 
-        public override TemplateElement Process(Cursor cursor)
+        public override Cursor Process(Cursor cursor, out TemplateElement templateElement)
         {
             //TODO: rewrite
             var idStartCursor = cursor.MoveAfter(startToken);
@@ -44,15 +44,15 @@ namespace SimpleTemplateEngine.Parser.Rules
             var endToken = pending.Replace("{id}", id);
             var contentEndCursor = contentStartCursor.MoveBefore(endToken);
 
-            var templateElement = new TemplateElement()
+            templateElement = new TemplateElement()
             {
                 Id = id,
                 PropertyName = propertyName,
                 ContentCursor = contentStartCursor.Truncate(contentEndCursor.CurrentPos)
             };
 
-            return templateElement;
-
+            //TODO move to after endToken
+            return contentEndCursor;
         }
     }
 }

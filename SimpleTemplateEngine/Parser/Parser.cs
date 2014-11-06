@@ -43,12 +43,12 @@ namespace SimpleTemplateEngine.Parser
                 }
                 else
                 {
-                    var templateElement = rule.Process(newCursor);
+                    TemplateElement templateElement;
+                    cursor = rule.Process(newCursor, out templateElement);
                     if (!templateElement.ContentCursor.AtEnd)
                     {
                         Process(stringBuilder, templateElement.ContentCursor, model);
                     }
-                    cursor = newCursor.AdvanceTo(templateElement.ContentCursor.Length);
                 }
             }
         }

@@ -23,18 +23,19 @@ namespace SimpleTemplateEngine.Parser.Rules
             endTokenBase = GetTextAfter(template, "ENDIFNOT #{id}");
         }
 
-        public override TemplateElement Process(Cursor cursor)
+        public override Cursor Process(Cursor cursor, out TemplateElement templateElement)
         {
             var newCursor = cursor.MoveBefore(endTokenBase);
             newCursor = newCursor.Advance(endTokenBase.Length);
 
-            return new TemplateElement()
+            templateElement = new TemplateElement()
             {
                 Id = null,
                 PropertyName = null,
                 ContentCursor = newCursor.Truncate()
             };
 
+            return newCursor;
         }
     }
 }
