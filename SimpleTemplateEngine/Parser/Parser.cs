@@ -14,24 +14,12 @@ namespace SimpleTemplateEngine.Parser
     public class Parser : IParser
     {
         private readonly IRuleset ruleset;
-
-        private readonly Dictionary<string, TemplateElement> startTokens;
         private readonly string template;
 
         public Parser(IRuleset ruleset, string template)
         {
             this.template = template;
             this.ruleset = ruleset;
-
-            startTokens = new Dictionary<string, TemplateElement>()
-            {
-                { GetTextBefore(ruleset.ModelSpecificationPattern, "{content}"), TemplateElement.ModelSpecification },
-                { GetTextBefore(ruleset.PrintPattern, "{propertyName}"), TemplateElement.Print },
-                { GetTextBefore(ruleset.PositiveConditionPattern, "{id}"), TemplateElement.PositiveCondition },
-                { GetTextBefore(ruleset.NegativeConditionPattern, "{id}"), TemplateElement.NegativeCondition },
-                { GetTextBefore(ruleset.RepeatingPattern, "{id}"), TemplateElement.Repeating }
-            };
-
         }
 
         public string Process(object model)
@@ -41,48 +29,19 @@ namespace SimpleTemplateEngine.Parser
             
             while (true)
             {
-                TemplateElement elementType;
-                var newCursor = SeekTemplateElement(cursor, out elementType);
+                Rule rule;
+                var newCursor = SeekTemplateElement(cursor, out rule);
                 var textBeforeElement = cursor.GetDifference(newCursor);
                 sb.Append(textBeforeElement);
-
-                string endToken;
-                switch (elementType)
+                
+                if (rule == null)
                 {
-                    case TemplateElement.ModelSpecification:
-                        endToken = GetTextAfter(ruleset.ModelSpecificationPattern, "{content}");
-                        cursor = Consume(newCursor, endToken);
-                        break;
-                    case TemplateElement.Print:
-                        endToken = GetTextAfter(ruleset.PrintPattern, "{propertyName}");
-                        cursor = Consume(newCursor, endToken);
-                        break;
-                    case TemplateElement.PositiveCondition:
-                        endToken = GetTextAfter(ruleset.PositiveConditionPattern, "ENDIF #{id}");
-                        //TODO: 
-                        //endToken = GetTextAfter(Ruleset.PositiveConditionPattern, "{content}");
-                        //replace id in endToken
-                        //recursive
-                        cursor = Consume(newCursor, endToken);
-                        break;
-                    case TemplateElement.NegativeCondition:
-                        endToken = GetTextAfter(ruleset.NegativeConditionPattern, "ENDIFNOT #{id}");
-                        //TODO: 
-                        //endToken = GetTextAfter(Ruleset.NegativeConditionPattern, "{content}");
-                        //replace id in endToken
-                        //recursive
-                        cursor = Consume(newCursor, endToken);
-                        break;
-                    case TemplateElement.Repeating:
-                        endToken = GetTextAfter(ruleset.RepeatingPattern, "ENDEACH #{id}");
-                        //TODO: 
-                        //endToken = GetTextAfter(Ruleset.RepeatingPattern, "{content}");
-                        //replace id in endToken
-                        //recursive
-                        cursor = Consume(newCursor, endToken);
-                        break;
-                    case TemplateElement.End: 
-                        return sb.ToString();
+                    return sb.ToString();
+                }
+                else
+                {
+                    var endToken = rule.EndToken;
+                    cursor = Consume(newCursor, endToken);
                 }
             }
         }
@@ -94,71 +53,20 @@ namespace SimpleTemplateEngine.Parser
             return newCursor;
         }
 
-        private Cursor SeekTemplateElement(Cursor cursor, out TemplateElement templateElement)
+        private Cursor SeekTemplateElement(Cursor cursor, out Rule rule)
         {
             string found;
-            var newCursor = cursor.SeekAny(startTokens.Keys, out found);
+            var newCursor = cursor.SeekAny(ruleset.StartTokens, out found);
             if (found == null)
             {
-                templateElement = TemplateElement.End;
+                rule = null;
             }
             else
             {
-                templateElement = startTokens[found];
+                rule = ruleset.GetRuleByStartToken(found);
             }
             return newCursor;
         }
 
-        private string GetTextBefore(string text, string token)
-        {
-            if (text == null)
-            {
-                throw new ArgumentNullException("text");
-            }
-
-            if (token == null)
-            {
-                throw new ArgumentNullException("token");
-            }
-
-            var pos = text.IndexOf(token);
-            if (pos < 0)
-            {
-                throw new ArgumentException("Text does not contain specified token");
-            }
-
-            if (pos == 0)
-            {
-                throw new ArgumentException("Text starts with token");
-            }
-
-            return text.Substring(0, pos);
-        }
-
-        private string GetTextAfter(string text, string token)
-        {
-            if (text == null)
-            {
-                throw new ArgumentNullException("text");
-            }
-
-            if (token == null)
-            {
-                throw new ArgumentNullException("token");
-            }
-
-            var pos = text.IndexOf(token);
-            if (pos < 0)
-            {
-                throw new ArgumentException("Text does not contain specified token");
-            }
-
-            if (pos == 0)
-            {
-                throw new ArgumentException("Text starts with token");
-            }
-
-            return text.Substring(pos + token.Length, text.Length - pos - token.Length);
-        }
     }
 }
