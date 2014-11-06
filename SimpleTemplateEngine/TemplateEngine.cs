@@ -17,7 +17,7 @@ namespace SimpleTemplateEngine
         public TemplateEngine(IFileReader fileReader = null, IParserFactory parserFactory = null)
         {
             FileReader = fileReader ?? new FileReader();
-            ParserFactory = parserFactory ?? new ParserFactory(new Ruleset());
+            ParserFactory = parserFactory ?? new ParserFactory();
         }
 
         public string Process(string path, object model)

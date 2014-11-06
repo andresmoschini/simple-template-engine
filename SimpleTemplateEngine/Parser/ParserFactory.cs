@@ -15,9 +15,9 @@ namespace SimpleTemplateEngine.Parser
     {
         private readonly IRuleset ruleset;
         
-        public ParserFactory(IRuleset ruleset)
+        public ParserFactory()
         {
-            this.ruleset = ruleset;
+            this.ruleset = new Ruleset();
         }
 
         public IParser CreateParser(string template)
