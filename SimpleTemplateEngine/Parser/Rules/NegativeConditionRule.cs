@@ -9,8 +9,8 @@ namespace SimpleTemplateEngine.Parser.Rules
     public class NegativeConditionRule : Rule
     {
         private string startToken;
+        private string endTokenBase;
         public override string StartToken { get { return startToken; } }
-        public override string EndToken { get; protected set; }
 
         /// <summary>
         /// Allow to specify to render a `TEXT BLOCK` only if the condition is false.
@@ -20,7 +20,21 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{id}");
-            EndToken = GetTextAfter(template, "ENDIFNOT #{id}");
+            endTokenBase = GetTextAfter(template, "ENDIFNOT #{id}");
+        }
+
+        public override TemplateElement Process(Cursor cursor)
+        {
+            var newCursor = cursor.Seek(endTokenBase);
+            newCursor = newCursor.Advance(endTokenBase.Length);
+
+            return new TemplateElement()
+            {
+                Id = null,
+                PropertyName = null,
+                ContentCursor = newCursor.Truncate()
+            };
+
         }
     }
 }

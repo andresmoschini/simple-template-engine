@@ -9,8 +9,8 @@ namespace SimpleTemplateEngine.Parser.Rules
     public class RepeatingRule : Rule
     {
         private string startToken;
+        private string endTokenBase;
         public override string StartToken { get { return startToken; } }
-        public override string EndToken { get; protected set; }
 
         /// <summary>
         /// Allow to specify to repeat a `TEXT BLOCK` for each item of the list property.
@@ -20,7 +20,21 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{id}");
-            EndToken = GetTextAfter(template, "ENDEACH #{id}");
+            endTokenBase = GetTextAfter(template, "ENDEACH #{id}");
+        }
+
+        public override TemplateElement Process(Cursor cursor)
+        {
+            var newCursor = cursor.Seek(endTokenBase);
+            newCursor = newCursor.Advance(endTokenBase.Length);
+
+            return new TemplateElement()
+            {
+                Id = null,
+                PropertyName = null,
+                ContentCursor = newCursor.Truncate()
+            };
+
         }
     }
 }

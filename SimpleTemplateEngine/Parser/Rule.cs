@@ -8,14 +8,15 @@ namespace SimpleTemplateEngine.Parser
 {
     public abstract class Rule
     {
-        public string Template { get; private set; }
+        public string RuleTemplate { get; private set; }
         public abstract string StartToken { get; }
-        public abstract string EndToken { get; protected set; }
 
         public Rule(string template)
         {
-            Template = template;
+            RuleTemplate = template;
         }
+
+        public abstract TemplateElement Process(Cursor cursor);
 
         protected static string GetTextBefore(string text, string token)
         {

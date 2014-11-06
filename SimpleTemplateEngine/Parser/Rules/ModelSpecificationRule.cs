@@ -9,9 +9,9 @@ namespace SimpleTemplateEngine.Parser.Rules
     public class ModelSpecificationRule : Rule
     {
         private string startToken;
+        private string endTokenBase;
         public override string StartToken { get { return startToken; } }
-        public override string EndToken { get; protected set; }
-
+        
         /// <summary>
         /// Describes how is the expected model, it is removed on template rendering.
         /// </summary>
@@ -20,8 +20,20 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{content}");
-            EndToken = GetTextAfter(template, "{content}");
+            endTokenBase = GetTextAfter(template, "{content}");
         }
 
+        public override TemplateElement Process(Cursor cursor)
+        {
+            var newCursor = cursor.Seek(endTokenBase);
+            newCursor = newCursor.Advance(endTokenBase.Length);
+
+            return new TemplateElement()
+            {
+                Id = null,
+                PropertyName = null,
+                ContentCursor = newCursor.Truncate()
+            };
+        }
     }
 }

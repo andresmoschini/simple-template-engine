@@ -9,8 +9,8 @@ namespace SimpleTemplateEngine.Parser.Rules
     public class PrintRule : Rule
     {
         private string startToken;
+        private string endTokenBase;
         public override string StartToken { get { return startToken; } }
-        public override string EndToken { get; protected set; }
 
         /// <summary>
         /// Replace the element with current property value.
@@ -20,7 +20,21 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{propertyName}");
-            EndToken = GetTextAfter(template, "{propertyName}");
+            endTokenBase = GetTextAfter(template, "{propertyName}");
+        }
+
+        public override TemplateElement Process(Cursor cursor)
+        {
+            var newCursor = cursor.Seek(endTokenBase);
+            newCursor = newCursor.Advance(endTokenBase.Length);
+
+            return new TemplateElement()
+            {
+                Id = null,
+                PropertyName = null,
+                ContentCursor = newCursor.Truncate()
+            };
+
         }
     }
 }

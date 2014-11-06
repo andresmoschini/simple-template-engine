@@ -23,32 +23,34 @@ namespace SimpleTemplateEngine.Parser
         public string Process(string template, object model)
         {
             var cursor = new Cursor(template);
-            var sb = new StringBuilder();
-            
+            var stringBuilder = new StringBuilder();
+            Process(stringBuilder, cursor, model);
+            return stringBuilder.ToString();
+        }
+
+        protected void Process(StringBuilder stringBuilder, Cursor cursor, object model)
+        {
             while (true)
             {
                 Rule rule;
                 var newCursor = SeekTemplateElement(cursor, out rule);
                 var textBeforeElement = cursor.GetDifference(newCursor);
-                sb.Append(textBeforeElement);
+                stringBuilder.Append(textBeforeElement);
                 
                 if (rule == null)
                 {
-                    return sb.ToString();
+                    return;
                 }
                 else
                 {
-                    var endToken = rule.EndToken;
-                    cursor = Consume(newCursor, endToken);
+                    var templateElement = rule.Process(newCursor);
+                    if (!templateElement.ContentCursor.AtEnd)
+                    {
+                        Process(stringBuilder, templateElement.ContentCursor, model);
+                    }
+                    cursor = newCursor.AdvanceTo(templateElement.ContentCursor.Length);
                 }
             }
-        }
-
-        private Cursor Consume(Cursor cursor, string endText)
-        {
-            var newCursor = cursor.Seek(endText);
-            newCursor = newCursor.Advance(endText.Length);
-            return newCursor;
         }
 
         private Cursor SeekTemplateElement(Cursor cursor, out Rule rule)
