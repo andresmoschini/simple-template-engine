@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SimpleTemplateEngine.Parser.Rules
 {
-    public class PositiveConditionRule : Rule
+    public class PositiveConditionRule : IdentifiedTemplateRule
     {
-        private string startToken;
-        private string endTokenBase;
-        public override string StartToken { get { return startToken; } }
-
         /// <summary>
         /// Allow to specify to render a `TEXT BLOCK` only if the condition is true.
         /// </summary>
@@ -19,22 +15,6 @@ namespace SimpleTemplateEngine.Parser.Rules
         public PositiveConditionRule(string template)
             : base(template)
         {
-            startToken = GetTextBefore(template, "{id}");
-            endTokenBase = GetTextAfter(template, "ENDIF #{id}");
-        }
-
-        public override TemplateElement Process(Cursor cursor)
-        {
-            var newCursor = cursor.Seek(endTokenBase);
-            newCursor = newCursor.Advance(endTokenBase.Length);
-
-            return new TemplateElement()
-            {
-                Id = null,
-                PropertyName = null,
-                ContentCursor = newCursor.Truncate()
-            };
-
         }
     }
 }

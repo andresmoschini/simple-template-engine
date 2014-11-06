@@ -32,6 +32,11 @@ namespace SimpleTemplateEngine.Parser
             return new Cursor(Text, CurrentPos, CurrentPos);
         }
 
+        public Cursor Truncate(int position)
+        {
+            return new Cursor(Text, CurrentPos, position);
+        }
+
         public Cursor Advance(int value = 1)
         {
             return new Cursor(Text, CurrentPos + value, Length);
@@ -58,10 +63,24 @@ namespace SimpleTemplateEngine.Parser
             return Text.Substring(startPos, endPos - startPos);
         }
 
-        public Cursor Seek(string text)
+        public Cursor MoveBefore(string text)
         {
             var pos = Text.IndexOf(text, CurrentPos);
-            if (pos < 0)
+            if (pos < 0 || pos > Length)
+            {
+                //TODO: take it into account what happen when text is not present
+                return AdvanceToEnd();
+            }
+            else
+            {
+                return new Cursor(Text, pos, Length);
+            }
+        }
+
+        public Cursor MoveAfter(string text)
+        {
+            var pos = Text.IndexOf(text, CurrentPos)+text.Length;
+            if (pos < 0 || pos > Length)
             {
                 //TODO: take it into account what happen when text is not present
                 return AdvanceToEnd();
@@ -121,14 +140,17 @@ namespace SimpleTemplateEngine.Parser
 
         public override string ToString()
         {
-            const int sampleLenght = 30;
-            
-            var sampleFinish = Math.Min(Length, CurrentPos + sampleLenght);
+            var length = Length - CurrentPos;
+            const int sampleLenght = 40;
 
-            return string.Format("{0}{1}{2}",
-                CurrentPos > 0 ? "..." : string.Empty,
-                Text.Substring(CurrentPos, sampleFinish - CurrentPos),
-                sampleFinish < Length ? "..." : string.Empty);
+            if (length < (sampleLenght + 3))
+            {
+                return Text.Substring(CurrentPos, length);
+            }
+            else
+            {
+                return Text.Substring(CurrentPos, sampleLenght) + "..." + Text.Substring(Length - sampleLenght, sampleLenght);
+            }
         }
 
     }

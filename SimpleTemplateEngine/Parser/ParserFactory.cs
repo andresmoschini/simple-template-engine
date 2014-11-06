@@ -21,9 +21,9 @@ namespace SimpleTemplateEngine.Parser
             var ruleset = new Ruleset(new Rule[] {
                 new ModelSpecificationRule("<!--{{ MODEL{content}}}-->"),
                 new PrintRule("{{= {propertyName} }}"),
-                new PositiveConditionRule("<!--{{ IF #{id} {propertyName} }}{content}<!--{{ ENDIF #{id} }}-->"),
-                new NegativeConditionRule("<!--{{ IFNOT #{id} {propertyName} }}{content}<!--{{ ENDIFNOT #{id} }}-->"),
-                new RepeatingRule("<!--{{ EACH #{id} {propertyName} }}{content}<!--{{ ENDEACH #{id} }}-->")
+                new PositiveConditionRule("<!--{{ IF #{id} {propertyName} }}-->{content}<!--{{ ENDIF #{id} }}-->"),
+                new NegativeConditionRule("<!--{{ IFNOT #{id} {propertyName} }}-->{content}<!--{{ ENDIFNOT #{id} }}-->"),
+                new RepeatingRule("<!--{{ EACH #{id} {propertyName} }}-->{content}<!--{{ ENDEACH #{id} }}-->")
             });
             return new Parser(ruleset);
         }

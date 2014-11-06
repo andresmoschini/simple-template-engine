@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SimpleTemplateEngine.Parser.Rules
 {
-    public class RepeatingRule : Rule
+    public class RepeatingRule : IdentifiedTemplateRule
     {
-        private string startToken;
-        private string endTokenBase;
-        public override string StartToken { get { return startToken; } }
-
         /// <summary>
         /// Allow to specify to repeat a `TEXT BLOCK` for each item of the list property.
         /// </summary>
@@ -19,22 +15,7 @@ namespace SimpleTemplateEngine.Parser.Rules
         public RepeatingRule(string template)
             : base(template)
         {
-            startToken = GetTextBefore(template, "{id}");
-            endTokenBase = GetTextAfter(template, "ENDEACH #{id}");
         }
 
-        public override TemplateElement Process(Cursor cursor)
-        {
-            var newCursor = cursor.Seek(endTokenBase);
-            newCursor = newCursor.Advance(endTokenBase.Length);
-
-            return new TemplateElement()
-            {
-                Id = null,
-                PropertyName = null,
-                ContentCursor = newCursor.Truncate()
-            };
-
-        }
     }
 }
