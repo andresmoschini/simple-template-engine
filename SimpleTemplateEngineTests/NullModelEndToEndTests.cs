@@ -12,7 +12,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldContainsTheLastCharacters()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             var endCharacters = result.Substring(result.Length - 18, 18);
             Assert.AreEqual("\r\n</body>\r\n</html>", endCharacters);
         }
@@ -22,7 +22,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsModelDefinition()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             var endCharacters = result.Substring(0, 158);
             Assert.AreEqual("<html lang=\"en\">\r\n<head>\r\n    <title>Copsync Email</title>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width\">\r\n    \r\n</head>", endCharacters);
         }
@@ -32,7 +32,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsIFOpen()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ IF "));
             Assert.IsFalse(result.Contains("{ IF"));
         }
@@ -42,7 +42,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsIFClose()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ ENDIF "));
             Assert.IsFalse(result.Contains("{ ENDIF "));
         }
@@ -52,7 +52,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsIFNOTOpen()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ IFNOT "));
             Assert.IsFalse(result.Contains("{ IFNOT "));
         }
@@ -62,7 +62,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsIFNOTClose()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ ENDIFNOT "));
             Assert.IsFalse(result.Contains("{ ENDIFNOT "));
         }
@@ -72,7 +72,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsEACHOpen()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ EACH "));
             Assert.IsFalse(result.Contains("{ EACH"));
         }
@@ -82,7 +82,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldNotContainsEACHClose()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains("<!--{{ ENDEACH "));
             Assert.IsFalse(result.Contains("{ ENDEACH"));
         }
@@ -92,7 +92,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextShouldContainsIFNOTcontents()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsTrue(result.Contains(
 @"                    <tr>
                         <td align=""left"" valign=""top"" height=""25"" colspan=""2""></td>
@@ -115,7 +115,7 @@ namespace SimpleTemplateEngineTests
         public void ResultTextNotShouldContainsIFcontents()
         {
             var engine = new TemplateEngine();
-            var result = engine.Process("alert.html", null);
+            var result = engine.ProcessFile("alert.html", null);
             Assert.IsFalse(result.Contains(@"<td align=""center"" width=""100%"" valign=""middle"" bgcolor=""#EEB700"" height=""36""><span style=""font-family: Arial, Helvetica, sans-serif; color: #FFFFFF; font-size: 14px; font-weight: bold;"">THIS IS A TEST -- THIS IS NOT A LIVE ALERT</span></td>"));
         }
 

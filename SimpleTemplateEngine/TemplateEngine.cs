@@ -20,10 +20,16 @@ namespace SimpleTemplateEngine
             ParserFactory = parserFactory ?? new ParserFactory();
         }
 
-        public string Process(string path, object model)
+        public string ProcessFile(string path, object model)
         {
             //TODO: improve it reading the file in place of use a string in memory
             var template = FileReader.Read(path);
+            var parser = ParserFactory.CreateParser();
+            return parser.Process(template, model);
+        }
+
+        public string ProcessString(string template, object model)
+        {
             var parser = ParserFactory.CreateParser();
             return parser.Process(template, model);
         }
