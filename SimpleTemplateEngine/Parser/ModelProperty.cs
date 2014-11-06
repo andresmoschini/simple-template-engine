@@ -13,20 +13,30 @@ namespace SimpleTemplateEngine.Parser
         public string StringValue { get; set; }
         public Object[] ListValue { get; set; }
 
+        public static readonly ModelProperty Empty = new ModelProperty()
+        {
+            BooleanValue = false,
+            StringValue = "[Empty]",
+            ListValue = new object[] { }
+        };
+
         public static ModelProperty FromObject(object model, string propertyName)
         {
+            if (model == null)
+            {
+                return Empty;
+            }
             var property = model.GetType().GetProperty(propertyName);
+            if (property == null)
+            {
+                return Empty;
+            }
             var type = property.PropertyType;
             var value = property.GetGetMethod().Invoke(model, null);
 
             if (value == null)
             {
-                return new ModelProperty()
-                {
-                    BooleanValue = false,
-                    StringValue = "[Empty]",
-                    ListValue = new object[] { }
-                };
+                return Empty;
             }
             else if (type == typeof(string))
             {

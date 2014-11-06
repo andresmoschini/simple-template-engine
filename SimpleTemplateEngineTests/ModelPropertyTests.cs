@@ -10,7 +10,28 @@ namespace SimpleTemplateEngineTests
     public class ModelPropertyTests
     {
         [TestMethod]
-        public void Test()
+        public void ItShouldReturnEmptyForNullObject()
+        {
+            var value = ModelProperty.FromObject(null, "StringProperty");
+            Assert.AreEqual(ModelProperty.Empty, value);
+        }
+
+        [TestMethod]
+        public void ItShouldReturnEmptyForInexistentProperties()
+        {
+            var o = new
+            {
+                StringProperty = "StringValue",
+                EmptyStringProperty = "",
+                BooleanPropertyTrue = true,
+            };
+
+            var value = ModelProperty.FromObject(o, "Inexistent");
+            Assert.AreEqual(ModelProperty.Empty, value);
+        }
+    
+        [TestMethod]
+        public void TestCasting()
         {
             var o = new
             {

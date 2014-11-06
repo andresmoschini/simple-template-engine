@@ -17,5 +17,10 @@ namespace SimpleTemplateEngine.Parser.Rules
         {
         }
 
+        public override IEnumerable<Tuple<Cursor, object>> Process(TemplateElement templateElement, ModelProperty modelProperty, object parentModel)
+        {
+            return modelProperty.ListValue.Select(x => new Tuple<Cursor, object>(templateElement.ContentCursor, x));
+        }
+
     }
 }

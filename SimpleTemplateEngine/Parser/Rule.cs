@@ -18,6 +18,9 @@ namespace SimpleTemplateEngine.Parser
 
         public abstract Cursor Preprocess(Cursor cursor, out TemplateElement templateElement);
 
+        //TODO: find a more elegant way to do it
+        public abstract IEnumerable<Tuple<Cursor, object>> Process(TemplateElement templateElement, ModelProperty modelProperty, object parentModel);
+
         protected static string GetTextBefore(string text, string token)
         {
             if (text == null)
