@@ -8,7 +8,8 @@ namespace SimpleTemplateEngine.Parser.Rules
 {
     public class ModelSpecificationRule : Rule
     {
-        public override string StartToken { get; protected set; }
+        private string startToken;
+        public override string StartToken { get { return startToken; } }
         public override string EndToken { get; protected set; }
 
         /// <summary>
@@ -18,7 +19,7 @@ namespace SimpleTemplateEngine.Parser.Rules
         public ModelSpecificationRule(string template) 
             : base(template)
         {
-            StartToken = GetTextBefore(template, "{content}");
+            startToken = GetTextBefore(template, "{content}");
             EndToken = GetTextAfter(template, "{content}");
         }
 

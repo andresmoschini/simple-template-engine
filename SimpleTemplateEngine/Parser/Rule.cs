@@ -9,7 +9,7 @@ namespace SimpleTemplateEngine.Parser
     public abstract class Rule
     {
         public string Template { get; private set; }
-        public abstract string StartToken { get; protected set; }
+        public abstract string StartToken { get; }
         public abstract string EndToken { get; protected set; }
 
         public Rule(string template)
