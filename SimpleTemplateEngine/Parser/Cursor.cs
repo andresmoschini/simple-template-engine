@@ -32,6 +32,11 @@ namespace SimpleTemplateEngine.Parser
             return new Cursor(Text, CurrentPos, CurrentPos);
         }
 
+        public Cursor Truncate(int position)
+        {
+            return new Cursor(Text, CurrentPos, position);
+        }
+
         public Cursor Advance(int value = 1)
         {
             return new Cursor(Text, CurrentPos + value, Length);
@@ -58,10 +63,24 @@ namespace SimpleTemplateEngine.Parser
             return Text.Substring(startPos, endPos - startPos);
         }
 
-        public Cursor Seek(string text)
+        public Cursor MoveBefore(string text)
         {
             var pos = Text.IndexOf(text, CurrentPos);
-            if (pos < 0)
+            if (pos < 0 || pos > Length)
+            {
+                //TODO: take it into account what happen when text is not present
+                return AdvanceToEnd();
+            }
+            else
+            {
+                return new Cursor(Text, pos, Length);
+            }
+        }
+
+        public Cursor MoveAfter(string text)
+        {
+            var pos = Text.IndexOf(text, CurrentPos)+text.Length;
+            if (pos < 0 || pos > Length)
             {
                 //TODO: take it into account what happen when text is not present
                 return AdvanceToEnd();

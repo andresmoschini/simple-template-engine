@@ -20,20 +20,38 @@ namespace SimpleTemplateEngine.Parser.Rules
             : base(template)
         {
             startToken = GetTextBefore(template, "{id}");
-            endTokenBase = GetTextAfter(template, "ENDIF #{id}");
+            //<!--{{ IF #{id} {propertyName} }}{content}<!--{{ ENDIF #{id} }}-->
+            //<!--{{ IF #{id} {propertyName} }}-->
+            //<!--{{ ENDIF #{id} }}-->
+            endTokenBase = GetTextAfter(template, "{content}");
         }
 
         public override TemplateElement Process(Cursor cursor)
         {
-            var newCursor = cursor.Seek(endTokenBase);
-            newCursor = newCursor.Advance(endTokenBase.Length);
+            //TODO: rewrite
+            var idStartCursor = cursor.MoveAfter(startToken);
+            var pending = GetTextAfter(RuleTemplate, "{id}");
+            var beforePropertyName = GetTextBefore(pending, "{propertyName}");
+            var idEndCursor = idStartCursor.MoveBefore(beforePropertyName);
+            var id = idStartCursor.GetDifference(idEndCursor);
+            var propertyNameStartCursor = idEndCursor.MoveAfter(beforePropertyName);
+            pending = GetTextAfter(pending, "{propertyName}");
+            var beforeContent = GetTextBefore(pending, "{content}");
+            var propertyNameEndCursor = propertyNameStartCursor.MoveBefore(beforeContent);
+            var propertyName = propertyNameStartCursor.GetDifference(propertyNameEndCursor);
+            var contentStartCursor = propertyNameEndCursor.MoveAfter(beforeContent);
+            pending = GetTextAfter(pending, "{content}");
+            var endToken = pending.Replace("{id}", id);
+            var contentEndCursor = contentStartCursor.MoveBefore(endToken);
 
-            return new TemplateElement()
+            var templateElement = new TemplateElement()
             {
-                Id = null,
-                PropertyName = null,
-                ContentCursor = newCursor.Truncate()
+                Id = id,
+                PropertyName = propertyName,
+                ContentCursor = contentStartCursor.Truncate(contentEndCursor.CurrentPos)
             };
+
+            return templateElement;
 
         }
     }
