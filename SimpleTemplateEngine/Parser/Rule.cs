@@ -16,7 +16,7 @@ namespace SimpleTemplateEngine.Parser
             RuleTemplate = template;
         }
 
-        public abstract Cursor Process(Cursor cursor, out TemplateElement templateElement);
+        public abstract Cursor Preprocess(Cursor cursor, out TemplateElement templateElement);
 
         protected static string GetTextBefore(string text, string token)
         {

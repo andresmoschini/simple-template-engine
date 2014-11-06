@@ -17,7 +17,7 @@ namespace SimpleTemplateEngine.Parser.Rules
             startToken = GetTextBefore(template, "{id}");
         }
 
-        public override Cursor Process(Cursor cursor, out TemplateElement templateElement)
+        public override Cursor Preprocess(Cursor cursor, out TemplateElement templateElement)
         {
             //TODO: rewrite
             var endTokenBase = GetTextAfter(RuleTemplate, "{content}");

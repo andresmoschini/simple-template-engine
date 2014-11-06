@@ -23,7 +23,7 @@ namespace SimpleTemplateEngine.Parser.Rules
             endTokenBase = GetTextAfter(template, "{propertyName}");
         }
 
-        public override Cursor Process(Cursor cursor, out TemplateElement templateElement)
+        public override Cursor Preprocess(Cursor cursor, out TemplateElement templateElement)
         {
             var newCursor = cursor.MoveBefore(endTokenBase);
             newCursor = newCursor.Advance(endTokenBase.Length);

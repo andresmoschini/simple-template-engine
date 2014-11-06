@@ -44,7 +44,7 @@ namespace SimpleTemplateEngine.Parser
                 else
                 {
                     TemplateElement templateElement;
-                    cursor = rule.Process(newCursor, out templateElement);
+                    cursor = rule.Preprocess(newCursor, out templateElement);
                     if (!templateElement.ContentCursor.AtEnd)
                     {
                         Process(stringBuilder, templateElement.ContentCursor, model);
